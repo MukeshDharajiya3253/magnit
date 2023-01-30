@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="0" author="Mukesh">
+        <preConditions onFail="MARK_RAN" onFailMessage="already exists">
+            <sqlCheck expectedResult="0">
+                SELECT count(*)
+                FROM information_schema.tables
+                WHERE table_schema = 'empHappiness'
+                AND table_name = 'dynamic_ui_controls'
+                LIMIT 1;
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            CREATE TABLE dynamic_ui_controls (
+            id BIGINT NOT NULL AUTO_INCREMENT,
+            control_type VARCHAR(32) NOT NULL,
+            control_name VARCHAR(64) NOT NULL,
+            control_label VARCHAR(64) NOT NULL,
+            config json DEFAULT NULL,
+            created TIMESTAMP default CURRENT_TIMESTAMP,
+            updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            deleted BIT(1) NOT NULL DEFAULT false,
+            UNIQUE KEY(control_name),
+            PRIMARY KEY (id)
+            );
+        </sql>
+
+    </changeSet>
+
+    <changeSet id="1" author="Mukesh">
+        <preConditions onFail="MARK_RAN" onFailMessage="already exists">
+            <sqlCheck expectedResult="0">
+                SELECT count(*)
+                FROM information_schema.tables
+                WHERE table_schema = 'empHappiness'
+                AND table_name = 'dynamic_ui'
+                LIMIT 1;
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            CREATE TABLE dynamic_ui (
+            id BIGINT NOT NULL AUTO_INCREMENT,
+            form_name VARCHAR(64) NOT NULL,
+            controls_config json NOT NULL,
+            created TIMESTAMP default CURRENT_TIMESTAMP,
+            updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            deleted BIT(1) NOT NULL DEFAULT false,
+            UNIQUE KEY(form_name),
+            PRIMARY KEY (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="1" author="Mukesh">
+        <preConditions onFail="MARK_RAN" onFailMessage="already exists">
+            <sqlCheck expectedResult="0">
+                SELECT count(*)
+                FROM information_schema.tables
+                WHERE table_schema = 'empHappiness'
+                AND table_name = 'dynamic_ui'
+                LIMIT 1;
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            CREATE TABLE dynamic_ui (
+            id BIGINT NOT NULL AUTO_INCREMENT,
+            form_name VARCHAR(64) NOT NULL,
+            controls_config json NOT NULL,
+            created TIMESTAMP default CURRENT_TIMESTAMP,
+            updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            deleted BIT(1) NOT NULL DEFAULT false,
+            UNIQUE KEY(form_name),
+            PRIMARY KEY (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="Mukesh">
+        <preConditions onFail="MARK_RAN" onFailMessage="already exists">
+            <sqlCheck expectedResult="0">
+                SELECT count(*)
+                FROM information_schema.tables
+                WHERE table_schema = 'empHappiness'
+                AND table_name = 'employee_happiness_reviews'
+                LIMIT 1;
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            CREATE TABLE employee_happiness_reviews (
+            id BIGINT NOT NULL AUTO_INCREMENT,
+            review_data json NOT NULL,
+            happiness_level INT(8) NOT NULL,
+            created TIMESTAMP default CURRENT_TIMESTAMP,
+            updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            deleted BIT(1) NOT NULL DEFAULT false,
+            PRIMARY KEY (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="3" author="Mukesh">
+        <sql>
+        ALTER TABLE employee_happiness_reviews
+        ADD COLUMN form_id BIGINT NOT NULL DEFAULT 0;
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="Mukesh">
+        <sql>
+            ALTER TABLE employee_happiness_reviews
+            ADD COLUMN form_name VARCHAR(512) NOT NULL
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
